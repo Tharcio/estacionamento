@@ -1,34 +1,32 @@
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="layout" content="main"/>
-        <title>Login</title>
-    </head>
-    <body>
-        <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-        </g:if>
+package sistemadevagasdeestacionamento
 
-        <g:form action="signIn">
-            <input type="hidden" name="targetUri" value="${targetUri}"/>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>Username:</td>
-                        <td><input type="text" name="username" value="${username}"/></td>
-                    </tr>
-                    <tr>
-                        <td/>
-                        <td>
-                            <input type="submit" value="Sign in"/>
+import static org.springframework.http.HttpStatus.*
+import grails.transaction.Transactional
 
-                            <br>
 
-                            Não tem uma conta? <g:link controller="signUp" action="index">Crie</g:link>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </g:form>
-    </body>
-</html>
+package sistemadevagasdeestacionamento
+
+import org.apache.tools.ant.types.resources.comparators.Exists
+
+@Singleton
+public final class AdmHelper {
+    private String mCurrentUsername
+
+    public String getCurrentUsername() {
+        return mCurrentUsername
+    }
+
+    public static void signAdm(String nome, String senha) {
+        def admController = new admController()
+        def Adm = new Adm(admName: nome, senha)
+        admController.save(adm)
+    }
+
+    public void loginAdm(String username) {
+        mCurrentUsername = username
+    }
+
+    public void logout() {
+        mCurrentUsername = null
+    }
+}
