@@ -1,0 +1,110 @@
+Feature:Emitir Relatorio com as reservas do dia
+
+
+
+Scenario de GUI: Emitir relatorio do sistema
+Given Que esta registrado no sistema uma reserva com 
+usuario "Alguem" na vaga "11", com hora de entrada "10h"
+e de saida "13h" no dia "13/08/2017"
+And esta registrado no sistema uma reserva com 
+usuario "Ninguem" na vaga "15", com hora de entrada "09h"
+e de saida "16h" no dia "13/08/2017"
+And estou na pagina "Relatorios do Sistema"
+When eu peço a emissão do Relatorio do Sistema
+Then Aparece na tela um relatorio com todas as reservas do dia,
+mostrando "Alguem" na vaga "11", com hora de entrada "10h"
+e de saida "13h" e o usuario "Ninguem" na vaga "15", com hora de entrada "09h"
+e de saida "16h" no dia "13/08/2017"
+
+Scenario de GUI: Emitir relatorio do sistema sem reservas no dia
+Given estou na pagina "Relatorios do Sistema"
+And não foram feitas reservas no dia
+When eu peço a emissão do Relatorio do Sistema
+Then Aparece na tela uma mensagem informando não haver
+reservas no dia.
+
+ -- Scenario: Adicionar nova reserva no relatorio do sistema
+Given O usuario "Alguem" faz uma reserva de vaga na vaga "11", com 
+hora de entrada "10h" e de saida "13h" no dia "13/08/2017"
+When Quando "Alguem" confirma que está utilizando a vaga
+Then O sistema armazena no relatorio que a vaga "11" foi
+reservada e utilizada por "Alguem" com hora de entrada "10h"
+e hora de saída "13h" no dia "13/08/2017"
+
+ -- Scenario: Adicionar reserva modificada no relatorio do sistema
+Given O usuario "Alguem" faz uma reserva de vaga na vaga "11", com 
+hora de entrada "10h" e de saida "13h" no dia "13/08/2017"
+When Quando "Alguem" não confirma que está utilizando a vaga
+And  "Alguem" altera a modificação para a vaga "15", com 
+hora de entrada "11h" e de saida "14h" no dia "13/08/2017"
+Then O sistema armazena no relatorio que a vaga "15" foi
+reservada e utilizada por "Alguem" com hora de entrada "11h"
+e hora de saída "14h" no dia "13/08/2017"
+
+public static void criarUsuario (String usuario,String primeiroNome, String ultimoNome, String tipo, String setor) {
+     def user = new UserController()
+     user.params << [username: usuario, firstName: primeiroNome, lastName: ultimoNome, preferredSector: setor, preferredType: tipo]
+     user.create()
+     user.save()
+     user.response.reset()
+ }
+ 
+ public static void criarVagaLivre (String vaga1) {
+     def vaga = new VagaController()
+     vaga.params << [numero: vaga1, setor: "CCEN", ocupada: false, tipoVaga: "Normal"]
+     vaga.create()
+     vaga.save()
+     vaga.response.reset()
+ }
+ 
+ public static void criarReserva (String vaga1,Vaga vaga_n,Date entrada_n,Date saida_n ) {
+     def reserva = new ReservaController();
+	 def vaga = new VagaController();
+     reserva.params << [usuario: vaga1, vaga: vaga_n, entrada: entrada_n, saida: saida_n]
+     reserva.create()
+     reserva.save()
+     reserva.response.reset()
+	 vaga_um = Vaga.findByNumero(vaga1);
+	 vaga_um.
+ }
+
+
+Given(~/^Que esta registrado no sistema uma reserva com 
+usuario "([^"]*)" na vaga "([^"]*)", com data de entrada "([^"]*)"
+e de saida "([^"]*)" $/){String nome,String vaga,String hora_entrada,String hora_saida,->
+usuario = User.findByUsername(nome);
+vaga_um = Vaga.findByNumero(vaga);
+criarReserva(usuario,vaga_um,hora_entrada,hora_saida,data);
+
+}
+
+And(~/  ^$/){
+
+}
+
+Then(~/  ^$/){
+
+}
+
+Given(~/^estou na pagina "Relatorios do Sistema"$/){
+
+}
+
+And (~/^não foram feitas reservas no dia$/){
+}
+
+When (~/^eu peço a emissão do Relatorio do Sistema$/){
+
+}
+
+Then (~/^Aparece na tela uma mensagem informando não haver
+reservas no dia$/){
+
+
+}
+
+
+
+
+
+

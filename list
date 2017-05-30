@@ -1,0 +1,9 @@
+class HistoricoReservaVaga{
+	static hasMany = [reservas:Reserva]
+	}
+	
+	static constrains ={
+	}
+	
+	
+	
